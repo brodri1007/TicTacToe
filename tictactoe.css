@@ -1,0 +1,48 @@
+#game .bi::before {
+  vertical-align: inherit;
+}
+
+.square {
+justify-content: center;
+align-items: center;
+min-width: 100px;
+max-width: 100px;
+min-height: 100px;
+max-height: 100px;
+border: 1px solid black;
+font-size: 51px;
+
+}
+.cell {
+  width: 10em;
+  height: 10em;
+  color: #000;
+}
+.won {
+  color: #f00;
+}
+i.bi-x-lg {
+  color: #f00;
+}
+
+i.bi-x-lg {
+  color: #f00;
+}
+i.bi-circle {
+  color: #0f0;
+}
+.cell.border {
+  border: solid 6px #000!important;
+}
+.cell.border-bottom {
+  border-bottom: solid 6px #000!important;
+}
+.cell.border-top {
+  border-top: solid 6px #000!important;
+}
+.cell.border-start {
+  border-left: solid 6px #000!important;
+}
+.cell.border-end {
+  border-right: solid 6px #000!important;
+}

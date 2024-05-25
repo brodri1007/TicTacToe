@@ -1,9 +1,8 @@
 let playedSquares = [];
-
 let playerX = [];
 let playerO = [];
-let gameWon = false;
-
+let gameWonX = false;
+let gameWonO = false;
 
 const winningCombos = [
     [1, 2, 3],
@@ -16,30 +15,34 @@ const winningCombos = [
     [3, 5, 7],
 ];
 
+startGame ();
+    function startGame () {
+        playedSquares = [];
+        playerX = [];
+        playerO = [];
+        gameWonX = false;
+        gameWonO = false;
+       
 
-
-let currentPlayer = "X";
-
-for (let i = 1; i < 10; i++) {
-
-    let square = document.getElementById(i);
-    square.addEventListener('click', () => {
-    console.log(gameWon);
-    if(!gameWon){
-        console.log(i);
-        playedSquares.push(i);       
-        console.log(playedSquares); 
-        square.innerHTML = currentPlayer;
-        currentPlayer === "X" ? playerX.push(i) : playerO.push(i);
-        console.log(playerX, playerO);
-        
-            checkWinner();
-        } else {
-
-            square.innerHTML = "";
+        let currentPlayer = "X";
+        for (let i = 1; i < 10; i++) {
+            let square = document.getElementById(i);
+            square.className = "col square"; 
+            square.addEventListener('click', () => {
+                //console.log(i);
+                playedSquares.push("PS: " + i);
+                console.log(playedSquares);
+                square.innerHTML = currentPlayer;
+                console.log(currentPlayer + " " + i)
+                currentPlayer === "X" ? playerX.push(i) : playerO.push(i);
+                checkWinner();
+                currentPlayer = currentPlayer === "X" ? "O" : "X";
+            })
         }
-        currentPlayer = currentPlayer === "X" ? "O" : "X";
-    })
+        
+    }
+
+    
 
     function checkWinner() {
         for (let i = 0; i < winningCombos.length; i++) {
@@ -48,11 +51,13 @@ for (let i = 1; i < 10; i++) {
                     playerO.includes(winningCombos[i][x]) &&
                     playerO.includes(winningCombos[i][x + 1]) &&
                     playerO.includes(winningCombos[i][x + 2])
+
                 ) {
-                    gameWon = true;                    
+                    gameWonO = true;                    
                     document.getElementById(playerO[x]).className = "col square won";
                     document.getElementById(playerO[x + 1]).className = "col square won";
                     document.getElementById(playerO[x + 2]).className = "col square won";
+                    gameWon();
                   
                 }
                 if (
@@ -60,16 +65,45 @@ for (let i = 1; i < 10; i++) {
                     playerX.includes(winningCombos[i][x + 1]) &&
                     playerX.includes(winningCombos[i][x + 2])
                 ) {
-                    gameWon = true;                    
+                    gameWonX = true;                    
                     document.getElementById(playerX[x]).className = "col square won";
                     document.getElementById(playerX[x + 1]).className = "col square won";
                     document.getElementById(playerX[x + 2]).className = "col square won";
+                    gameWon();
                    
                 }
             };
-
         }
+        console.log(`Initial variables: ${playedSquares} ${playerX} ${playerO}` )
+       
     }
+
+function gameWon(){
+    if (gameWonX) {
+        alert("X Won!");
+        for (let i = 1; i < 10; i++) {
+            let square = document.getElementById(i);
+            playedSquares = [];
+            //console.log(playedSquares);
+            square.innerHTML = "";
+        }
+        startGame();
+        gameWonX = false;
+        
+    } 
+    
+    if (gameWonO){
+        alert("O Won!");
+        for (let i = 1; i < 10; i++) {
+            let square = document.getElementById(i);
+            playedSquares = [];
+           // console.log(playedSquares);
+            square.innerHTML = "";
+        }
+        startGame();
+        gameWonO = false;
+    };
+    console.log(`Initial variables: ${playedSquares} ${playerX} ${playerO}` )
 }
 
 
