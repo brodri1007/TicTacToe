@@ -1,109 +1,91 @@
+
+//Initial variables and arrays
 let playedSquares = [];
 let playerX = [];
 let playerO = [];
-let gameWonX = false;
-let gameWonO = false;
+let currentPlayer = "X";
 
 const winningCombos = [
     [1, 2, 3],
     [4, 5, 6],
     [7, 8, 9],
     [1, 4, 7],
-    [3, 5, 8],
+    [3, 5, 7],
     [3, 6, 9],
     [1, 5, 9],
-    [3, 5, 7],
+    [2, 5, 8],
 ];
 
-startGame ();
-    function startGame () {
+
+//main loop for the game
+for (let i = 1; i < 10; i++) {
+    //loop over the game's cells adding a class for size and borders
+    let square = document.getElementById(i);
+    square.className = "col square";
+
+//Addind and onclick event to each cell
+    square.addEventListener('click', () => {
+        //Limit the number of clicks to calculate when the game is tied
+           
+        playedSquares.push(i);
+            //Based on the currentPlayer, push the cell number to the player array       
+            currentPlayer === "X" ? playerX.push(i) : playerO.push(i)
+
+            //Ass player X o O to the cliked cell.
+            square.innerHTML = currentPlayer
+
+
+            //Switch the current player on each click
+            currentPlayer = currentPlayer === "X" ? "O" : "X"
+            document.getElementById('turn').innerHTML = `It's ${currentPlayer}' turn.`
+            //Check if there is a winner
+            checkWinner()
+          if (playedSquares.length > 8) {  
+           //Once all square have been played, it is a tie 
+            document.getElementById('turn').innerHTML = `It's a tie!.`
+            document.getElementById('turn').className = 'alert  alert-success';
+        }
+
+    })
+}
+
+
+//Reset by clicking the button and clearing all the cells and arrays
+function reset() {
+    for (let i = 1; i < 10; i++) {
+        let square = document.getElementById(i);
+        square.innerHTML = "";
         playedSquares = [];
         playerX = [];
         playerO = [];
-        gameWonX = false;
-        gameWonO = false;
-       
+    }
+    document.getElementById('turn').innerHTML = `It's ${currentPlayer}' turn.`
+    document.getElementById('turn').className = '';
+}
 
-        let currentPlayer = "X";
-        for (let i = 1; i < 10; i++) {
-            let square = document.getElementById(i);
-            square.className = "col square"; 
-            square.addEventListener('click', () => {
-                //console.log(i);
-                playedSquares.push("PS: " + i);
-                console.log(playedSquares);
-                square.innerHTML = currentPlayer;
-                console.log(currentPlayer + " " + i)
-                currentPlayer === "X" ? playerX.push(i) : playerO.push(i);
-                checkWinner();
-                currentPlayer = currentPlayer === "X" ? "O" : "X";
-            })
+
+
+function checkWinner() {
+//Loop thru the winningcombos array
+    for (let i = 0; i < winningCombos.length; i++) {
+        for (let x = 0; x < winningCombos[i].length; x++) {
+//Check if any of the player arrays contain the numbers in the winning arrays. If it does then we have a winner
+            if (playerO.includes(winningCombos[i][x]) && playerO.includes(winningCombos[i][x + 1]) && playerO.includes(winningCombos[i][x + 2])) {
+                document.getElementById('turn').innerHTML = `O it's the Winner!.`
+                document.getElementById('turn').className = 'alert  alert-success';
+            }
+
+//Check if any of the player arrays contain the numbers in the winning arrays. If it does then we have a winner
+
+            if (playerX.includes(winningCombos[i][x]) && playerX.includes(winningCombos[i][x + 1]) && playerX.includes(winningCombos[i][x + 2])) {
+                document.getElementById('turn').innerHTML = `X it's the Winner!.`
+                document.getElementById('turn').className = 'alert  alert-success';
+            }
+
         }
-        
+
     }
 
-    
-
-    function checkWinner() {
-        for (let i = 0; i < winningCombos.length; i++) {
-            for (let x = 0; x < winningCombos[i].length; x++) {
-                if (
-                    playerO.includes(winningCombos[i][x]) &&
-                    playerO.includes(winningCombos[i][x + 1]) &&
-                    playerO.includes(winningCombos[i][x + 2])
-
-                ) {
-                    gameWonO = true;                    
-                    document.getElementById(playerO[x]).className = "col square won";
-                    document.getElementById(playerO[x + 1]).className = "col square won";
-                    document.getElementById(playerO[x + 2]).className = "col square won";
-                    gameWon();
-                  
-                }
-                if (
-                    playerX.includes(winningCombos[i][x]) &&
-                    playerX.includes(winningCombos[i][x + 1]) &&
-                    playerX.includes(winningCombos[i][x + 2])
-                ) {
-                    gameWonX = true;                    
-                    document.getElementById(playerX[x]).className = "col square won";
-                    document.getElementById(playerX[x + 1]).className = "col square won";
-                    document.getElementById(playerX[x + 2]).className = "col square won";
-                    gameWon();
-                   
-                }
-            };
-        }
-        console.log(`Initial variables: ${playedSquares} ${playerX} ${playerO}` )
-       
-    }
-
-function gameWon(){
-    if (gameWonX) {
-        alert("X Won!");
-        for (let i = 1; i < 10; i++) {
-            let square = document.getElementById(i);
-            playedSquares = [];
-            //console.log(playedSquares);
-            square.innerHTML = "";
-        }
-        startGame();
-        gameWonX = false;
-        
-    } 
-    
-    if (gameWonO){
-        alert("O Won!");
-        for (let i = 1; i < 10; i++) {
-            let square = document.getElementById(i);
-            playedSquares = [];
-           // console.log(playedSquares);
-            square.innerHTML = "";
-        }
-        startGame();
-        gameWonO = false;
-    };
-    console.log(`Initial variables: ${playedSquares} ${playerX} ${playerO}` )
 }
 
 
